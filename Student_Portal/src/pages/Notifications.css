@@ -1,0 +1,122 @@
+.notifications-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.page-title {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+}
+
+.page-subtitle {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+}
+
+/* Notifications List */
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.notification-card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    transition: all var(--transition-fast);
+}
+
+.notification-card.unread {
+    background: linear-gradient(90deg, rgba(78, 205, 196, 0.08) 0%, var(--color-bg-secondary) 100%);
+    border-left: 3px solid var(--color-accent);
+}
+
+.notification-icon-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+}
+
+.notification-icon-box.reminder {
+    background-color: #e0e7ff;
+    color: #3730a3;
+}
+
+.notification-icon-box.confirmation {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.notification-icon-box.certificate {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.notification-icon-box.attendance {
+    background-color: #fce7f3;
+    color: #9d174d;
+}
+
+.notification-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-title {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+}
+
+.notification-message {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin-bottom: var(--space-2);
+}
+
+.notification-time {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+
+.empty-state {
+    padding: var(--space-12);
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .notification-card {
+        flex-direction: column;
+        gap: var(--space-3);
+    }
+
+    .notification-card .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

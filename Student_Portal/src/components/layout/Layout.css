@@ -1,0 +1,41 @@
+.app-layout {
+    min-height: 100vh;
+    background-color: var(--color-bg-primary);
+}
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    margin-top: var(--topnav-height);
+    min-height: calc(100vh - var(--topnav-height));
+    transition: margin-left var(--transition-base);
+}
+
+.main-content.sidebar-collapsed {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+.page-container {
+    padding: var(--space-8);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .main-content,
+    .main-content.sidebar-collapsed {
+        margin-left: 0;
+        padding-bottom: var(--mobile-nav-height);
+    }
+
+    .page-container {
+        padding: var(--space-5);
+    }
+}
+
+@media (max-width: 576px) {
+    .page-container {
+        padding: var(--space-4);
+    }
+}

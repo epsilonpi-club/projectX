@@ -1,0 +1,117 @@
+.help-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+.page-header {
+    margin-bottom: var(--space-2);
+}
+
+.page-title {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+}
+
+.page-subtitle {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+}
+
+/* Section */
+.help-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.section-title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+}
+
+/* FAQ */
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.faq-item {
+    padding: var(--space-5);
+}
+
+.faq-question {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+}
+
+.faq-question svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.faq-answer {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    padding-left: calc(18px + var(--space-3));
+}
+
+/* Contact Cards */
+.contact-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+}
+
+.contact-card {
+    padding: var(--space-6);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.contact-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg-tertiary);
+    border-radius: var(--radius-full);
+    color: var(--color-primary);
+}
+
+.contact-title {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+}
+
+.contact-description {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+}
+
+.contact-hours {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .contact-cards {
+        grid-template-columns: 1fr;
+    }
+}
