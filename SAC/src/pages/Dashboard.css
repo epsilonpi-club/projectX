@@ -1,0 +1,239 @@
+.dashboard {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-5);
+    margin-bottom: var(--space-6);
+}
+
+@media (max-width: 1200px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Alert Event List */
+.alert-event-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.alert-event-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3);
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.alert-event-item:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.alert-event-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.alert-event-name {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+}
+
+.alert-event-meta {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+}
+
+@media (max-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dashboard Card */
+.dashboard-card {
+    background-color: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.card-title {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+}
+
+/* Events List */
+.events-list {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.event-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.event-item:hover {
+    background-color: var(--color-bg-tertiary);
+}
+
+.event-date-badge {
+    width: 48px;
+    height: 48px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.event-date-day {
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    line-height: 1;
+}
+
+.event-date-month {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+}
+
+.event-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.event-name {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+}
+
+.event-meta {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.event-venue::before {
+    content: '•';
+    margin-right: var(--space-2);
+}
+
+/* Activity List */
+.activity-list {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+}
+
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.activity-icon.approved {
+    background-color: #d1fae5;
+    color: #059669;
+}
+
+.activity-icon.rejected {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-text {
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+}
+
+.activity-action {
+    font-weight: var(--font-semibold);
+}
+
+.activity-action.approved {
+    color: #059669;
+}
+
+.activity-action.rejected {
+    color: #dc2626;
+}
+
+.activity-meta {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
