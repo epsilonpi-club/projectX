@@ -5,16 +5,15 @@ import './Events.css';
 
 export default function Events() {
     const [searchParams] = useSearchParams();
-    const initialStatus = searchParams.get('status') || 'all';
+    const initialStatus = searchParams.get('status') || 'approved';
 
     const [activeTab, setActiveTab] = useState(initialStatus);
     const [searchQuery, setSearchQuery] = useState('');
 
     const tabs = [
-        { id: 'all', label: 'All Events' },
-        { id: 'draft', label: 'Draft' },
-        { id: 'pending', label: 'Pending' },
         { id: 'approved', label: 'Approved' },
+        { id: 'draft', label: 'Drafts' },
+        { id: 'pending', label: 'Pending' },
         { id: 'completed', label: 'Past' }
     ];
 
@@ -22,9 +21,7 @@ export default function Events() {
         let result = [...events];
 
         // Status filter
-        if (activeTab !== 'all') {
-            result = result.filter(e => e.status === activeTab);
-        }
+        result = result.filter(e => e.status === activeTab);
 
         // Search filter
         if (searchQuery) {
@@ -53,13 +50,47 @@ export default function Events() {
         return badges[status] || badges.draft;
     };
 
-    const formatDate = (dateStr) => {
-        return new Date(dateStr).toLocaleDateString('en-US', {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
-        });
+    // Calculate event progress based on current date vs event date
+    const getEventProgress = (event) => {
+        const now = new Date();
+        const eventDate = new Date(event.date);
+        const eventEndDate = event.endDate ? new Date(event.endDate) : eventDate;
+
+        // If event has docs approved, return 100%
+        if (event.docsApproved) return 100;
+
+        // If event is in the past
+        if (now > eventEndDate) {
+            // If docs submitted but not approved, show 80%
+            if (event.docsSubmitted) return 80;
+            // If marked complete but no docs, show 60%
+            if (event.markedComplete) return 60;
+            // Event ended but not marked complete, show 50%
+            return 50;
+        }
+
+        // Event is ongoing
+        if (now >= eventDate && now <= eventEndDate) return 40;
+
+        // Event is upcoming - calculate based on time until event
+        const createdDate = new Date(event.createdAt);
+        const totalDuration = eventDate - createdDate;
+        const elapsed = now - createdDate;
+        const progress = Math.min((elapsed / totalDuration) * 30, 30); // Max 30% before event
+        return Math.max(progress, 10); // Minimum 10%
+    };
+
+    const getProgressLabel = (event) => {
+        const now = new Date();
+        const eventDate = new Date(event.date);
+        const eventEndDate = event.endDate ? new Date(event.endDate) : eventDate;
+
+        if (event.docsApproved) return 'Completed';
+        if (event.docsSubmitted) return 'Docs Under Review';
+        if (event.markedComplete) return 'Submit Docs';
+        if (now > eventEndDate) return 'Mark Complete';
+        if (now >= eventDate) return 'Ongoing';
+        return 'Upcoming';
     };
 
     return (
@@ -89,10 +120,7 @@ export default function Events() {
                         >
                             {tab.label}
                             <span className="tab-count">
-                                {tab.id === 'all'
-                                    ? events.length
-                                    : events.filter(e => e.status === tab.id).length
-                                }
+                                {events.filter(e => e.status === tab.id).length}
                             </span>
                         </button>
                     ))}
@@ -117,68 +145,41 @@ export default function Events() {
                 {filteredEvents.length > 0 ? (
                     filteredEvents.map(event => (
                         <Link key={event.id} to={`/events/${event.id}`} className="event-card card">
-                            <img src={event.poster} alt={event.name} className="event-poster" />
                             <div className="event-content">
                                 <div className="event-header">
                                     <span className={`badge ${getStatusBadge(event.status).class}`}>
                                         {getStatusBadge(event.status).label}
                                     </span>
-                                    {event.isPaid && (
-                                        <span className="badge badge-paid">₹{event.registrationFee}</span>
-                                    )}
                                 </div>
                                 <h3 className="event-title">{event.name}</h3>
                                 <p className="event-description">{event.description}</p>
-                                <div className="event-meta-grid">
-                                    <div className="meta-item">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" />
-                                            <line x1="16" y1="2" x2="16" y2="6" />
-                                            <line x1="8" y1="2" x2="8" y2="6" />
-                                            <line x1="3" y1="10" x2="21" y2="10" />
-                                        </svg>
-                                        <span>{formatDate(event.date)}</span>
-                                    </div>
-                                    <div className="meta-item">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <circle cx="12" cy="12" r="10" />
-                                            <polyline points="12,6 12,12 16,14" />
-                                        </svg>
-                                        <span>{event.startTime} - {event.endTime}</span>
-                                    </div>
-                                    <div className="meta-item">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                                            <circle cx="12" cy="10" r="3" />
-                                        </svg>
-                                        <span>{event.venue}</span>
-                                    </div>
-                                    <div className="meta-item">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <div className="event-meta-row">
+                                    <div className="event-participants">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                             <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
                                             <circle cx="9" cy="7" r="4" />
                                             <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
                                         </svg>
-                                        <span>{event.registrations || 0} / {event.totalSeats} registered</span>
+                                        <span>{event.registrations || 0} / {event.totalSeats}</span>
                                     </div>
+                                    {(event.status === 'approved' || event.status === 'completed') && (
+                                        <div className="event-progress-container">
+                                            <div className="progress-bar">
+                                                <div
+                                                    className={`progress-fill ${event.docsApproved ? 'complete' : ''}`}
+                                                    style={{ width: `${getEventProgress(event)}%` }}
+                                                ></div>
+                                            </div>
+                                            <span className="progress-label">{getProgressLabel(event)}</span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
-                            <div className="event-actions">
-                                {event.status === 'draft' && (
-                                    <>
-                                        <button className="btn btn-primary btn-sm">Edit</button>
-                                        <button className="btn btn-success btn-sm">Submit</button>
-                                    </>
-                                )}
-                                {event.status === 'pending' && (
-                                    <span className="pending-text">Awaiting approval...</span>
-                                )}
-                                {event.status === 'approved' && (
-                                    <button className="btn btn-primary btn-sm">Manage</button>
-                                )}
-                                {event.status === 'completed' && (
-                                    <button className="btn btn-outline btn-sm">View Report</button>
-                                )}
+                            <div className="event-arrow">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                    <polyline points="12 5 19 12 12 19" />
+                                </svg>
                             </div>
                         </Link>
                     ))
@@ -194,10 +195,7 @@ export default function Events() {
                         </div>
                         <h3 className="empty-state-title">No events found</h3>
                         <p className="empty-state-description">
-                            {activeTab === 'all'
-                                ? 'Start by creating your first event'
-                                : `No ${activeTab} events yet`
-                            }
+                            No {activeTab} events yet
                         </p>
                         <Link to="/events/new" className="btn btn-primary">
                             Propose Event
