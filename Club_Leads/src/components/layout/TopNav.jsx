@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { currentClub, notifications } from '../../data/mockData';
+import { notifications } from '../../data/mockData';
 import './TopNav.css';
 
 export default function TopNav() {
@@ -16,17 +16,6 @@ export default function TopNav() {
                         <line x1="3" y1="18" x2="21" y2="18" />
                     </svg>
                 </button>
-                <div className="search-container">
-                    <svg className="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="11" cy="11" r="8" />
-                        <path d="M21 21l-4.35-4.35" />
-                    </svg>
-                    <input
-                        type="text"
-                        className="search-input"
-                        placeholder="Search events, members..."
-                    />
-                </div>
             </div>
 
             <div className="topnav-right">
