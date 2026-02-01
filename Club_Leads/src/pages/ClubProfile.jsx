@@ -4,8 +4,14 @@ import './ClubProfile.css';
 
 export default function ClubProfile() {
     const [isEditing, setIsEditing] = useState(false);
+
+    // Initialize state with mock data
+    const [clubData, setClubData] = useState(currentClub);
     const [members, setMembers] = useState(clubMembers);
+
+    // Form state for editing
     const [formData, setFormData] = useState({
+        name: currentClub.name, // Added Club Name
         description: currentClub.description,
         facultyName: currentClub.facultyAdvisor.name,
         facultyDept: currentClub.facultyAdvisor.department,
@@ -52,6 +58,21 @@ export default function ClubProfile() {
     };
 
     const handleSave = () => {
+        // Update main club state with form data
+        setClubData(prev => ({
+            ...prev,
+            name: formData.name,
+            description: formData.description,
+            email: formData.email,
+            instagram: formData.instagram,
+            website: formData.website,
+            facultyAdvisor: {
+                ...prev.facultyAdvisor,
+                name: formData.facultyName,
+                department: formData.facultyDept,
+                email: formData.facultyEmail
+            }
+        }));
         setIsEditing(false);
     };
 
@@ -69,8 +90,8 @@ export default function ClubProfile() {
             {/* Hero Section */}
             <div className="profile-hero">
                 <div className="hero-content">
-                    <img src={currentClub.logo} alt={currentClub.name} className="club-logo-large" />
-                    <h1 className="club-name-large">{currentClub.name}</h1>
+                    <img src={clubData.logo} alt={clubData.name} className="club-logo-large" />
+                    <h1 className="club-name-large">{clubData.name}</h1>
                 </div>
                 <button className="btn edit-profile-btn" onClick={() => setIsEditing(true)}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -92,12 +113,12 @@ export default function ClubProfile() {
                 </h2>
                 <div className="faculty-card">
                     <div className="faculty-avatar">
-                        {currentClub.facultyAdvisor.name.charAt(0)}
+                        {clubData.facultyAdvisor.name.charAt(0)}
                     </div>
                     <div className="faculty-info">
-                        <h4 className="faculty-name">{currentClub.facultyAdvisor.name}</h4>
-                        <p className="faculty-dept">{currentClub.facultyAdvisor.department}</p>
-                        <p className="faculty-email">{currentClub.facultyAdvisor.email}</p>
+                        <h4 className="faculty-name">{clubData.facultyAdvisor.name}</h4>
+                        <p className="faculty-dept">{clubData.facultyAdvisor.department}</p>
+                        <p className="faculty-email">{clubData.facultyAdvisor.email}</p>
                     </div>
                 </div>
             </div>
@@ -112,28 +133,28 @@ export default function ClubProfile() {
                     </svg>
                     About
                 </h2>
-                <p className="about-text">{formData.description}</p>
+                <p className="about-text">{clubData.description}</p>
 
                 <div className="socials-container">
                     <h4 className="socials-title">Connect with us</h4>
                     <div className="social-links">
-                        <a href={`mailto:${currentClub.email}`} className="social-link email">
+                        <a href={`mailto:${clubData.email}`} className="social-link email">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                                 <polyline points="22,6 12,13 2,6" />
                             </svg>
-                            {currentClub.email}
+                            {clubData.email}
                         </a>
-                        <a href={`https://instagram.com/${currentClub.instagram.replace('@', '')}`} className="social-link instagram" target="_blank" rel="noopener noreferrer">
+                        <a href={`https://instagram.com/${clubData.instagram.replace('@', '')}`} className="social-link instagram" target="_blank" rel="noopener noreferrer">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                                 <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
                                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                             </svg>
-                            {currentClub.instagram}
+                            {clubData.instagram}
                         </a>
-                        {currentClub.website && (
-                            <a href={currentClub.website} className="social-link website" target="_blank" rel="noopener noreferrer">
+                        {clubData.website && (
+                            <a href={clubData.website} className="social-link website" target="_blank" rel="noopener noreferrer">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <circle cx="12" cy="12" r="10" />
                                     <line x1="2" y1="12" x2="22" y2="12" />
@@ -210,6 +231,19 @@ export default function ClubProfile() {
                             </button>
                         </div>
                         <div className="modal-body">
+                            {/* Club Name - NEW */}
+                            <div className="form-group">
+                                <label className="form-label">Club Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    className="input"
+                                    placeholder="Club Name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                />
+                            </div>
+
                             <div className="form-group">
                                 <label className="form-label">About</label>
                                 <textarea
