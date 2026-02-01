@@ -8,7 +8,6 @@ import ProposeEvent from './pages/ProposeEvent';
 import EditEvent from './pages/EditEvent';
 import EventDetail from './pages/EventDetail';
 import EventCalendar from './pages/EventCalendar';
-import Members from './pages/Members';
 import ClubProfile from './pages/ClubProfile';
 
 // Protected Route wrapper component
@@ -53,7 +52,6 @@ function AppRoutes() {
         <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/events/:id/edit" element={<EditEvent />} />
         <Route path="/calendar" element={<EventCalendar />} />
-        <Route path="/members" element={<Members />} />
         <Route path="/profile" element={<ClubProfile />} />
       </Route>
     </Routes>
